@@ -114,6 +114,21 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
 .panel textarea{width:100%;min-height:140px;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px;font-family:var(--f-mono);font-size:12px}
 .danger{color:var(--maple)!important;border-color:var(--maple)!important}
 .status{font-size:12px;color:var(--mute)}
+.wxtabs{display:flex;flex-wrap:wrap;gap:8px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.wxnow{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.wxbig{display:flex;align-items:baseline;gap:6px}
+.wxbig b{font-size:44px;line-height:1;color:var(--ink)}
+.wxbig .unit{font-size:18px;color:var(--mute)}
+.wxico{font-size:30px;align-self:center}
+.wxmeta{display:grid;gap:2px;font-size:14px;min-width:0}
+.hot{color:var(--maple)!important;font-weight:700}
+.warnt{color:var(--warn)!important}
+table.wxt{min-width:440px}
+table.wxt td,table.wxt th{padding:6px 12px}
+caption{caption-side:top;text-align:left;font-size:12px;color:var(--mute);padding:10px 14px 0}
+button.pill{border:0;cursor:pointer;font:inherit;font-size:12px}
+.memo{width:100%;min-height:110px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;color:var(--ink)}
 .offline{display:inline-block;font-size:11px;border-radius:99px;padding:1px 8px;background:var(--warn-soft);color:var(--warn)}
 </style>
 </head>
@@ -135,7 +150,7 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
 
 <script>
 (function(){
-  const SEED = {"area": "福島県・あだたら山ロープウェイ", "date": "2026-10-11", "notes": [{"items": ["11日（日）：晴れ時々曇り／てんくらA／上空風 約1m/s／気温 約12〜14℃", "12日（月祝）：曇り時々晴れ／てんくらA／約3m/s／約10〜11℃", "数値は当日9時の上空予報。山頂の実際の風や一日の安全を保証するものではない"], "kind": "info", "title": "天気（10/9昼時点）"}, {"items": ["薬師岳〜安達太良山〜矢筈森の直近目撃は検索では見つからず。ただし「目撃なし」とは言えない", "あだたら高原リゾートも注意喚起中。福島県全域で秋の注意報が継続", "人が多くても遭遇しないわけではない", "錦秋号はクマ撃退スプレーの車内持ち込み禁止"], "kind": "warn", "title": "クマ"}, {"items": ["出発が遅れた・膝に違和感 → 矢筈森への往復を省き、安達太良山で折り返す"], "kind": "info", "title": "短縮案"}], "reservations": [{"item": "新幹線 東京→郡山（やまびこ51号）", "need": true, "note": "指定席。3連休なので早めに確保", "status": "済"}, {"item": "新幹線 郡山→東京（やまびこ64号）", "need": true, "note": "指定席がおすすめ。大きな渋滞時は出発前に変更", "status": ""}, {"item": "東北本線 郡山↔二本松", "need": false, "note": "普通列車"}, {"item": "錦秋号・岳温泉の路線バス", "need": false, "note": "当日バス停から乗車。座席確保はできない"}, {"item": "あだたら山ロープウェイ", "need": false, "note": "当日券でOK。Web券は乗車時刻・優先乗車の確保ではない"}, {"item": "奥岳の湯", "need": false, "note": "乗り場近く"}], "short": "安達太良山 10/11", "stats": {"cost": "約2.1〜2.3万円＋食事", "distance": "6.5km", "down": "448m", "source": "距離・時間は貼ってくれた他の人の記録（休憩込み）。当日のペースとロープウェイ待ちで調整。", "time": "4時間28分", "up": "431m"}, "tasks": [{"cat": "予約", "done": true, "id": "r1", "text": "行き新幹線 指定席：東京6:04→郡山7:23 やまびこ51号"}, {"cat": "予約", "done": false, "id": "r2", "note": "えきねっとで「10/11・郡山→東京・18時台」", "text": "帰り新幹線 指定席：郡山18:06→東京19:28 やまびこ64号"}, {"cat": "前日まで", "done": false, "id": "p1", "text": "最新の天気予報・てんくら登山指数を再確認"}, {"cat": "前日まで", "done": false, "id": "p2", "text": "ロープウェイの運行状況を確認"}, {"cat": "前日まで", "done": false, "id": "p3", "text": "バス代の小銭を用意（行き800円＋帰り分）"}, {"cat": "前日まで", "done": false, "id": "p4", "text": "短縮案（安達太良山で折り返し）を頭に入れておく"}, {"cat": "持ち物", "done": false, "id": "m1", "text": "温泉用タオル"}, {"cat": "持ち物", "done": false, "id": "m2", "text": "着替え"}, {"cat": "持ち物", "done": false, "id": "m3", "note": "錦秋号は車内持ち込み禁止", "text": "クマ撃退スプレーは持たない"}, {"cat": "当日", "done": false, "id": "d1", "note": "二本松での乗り継ぎは6分", "text": "トイレ・買い物は郡山までに済ませる"}, {"cat": "当日", "done": false, "id": "d2", "text": "ロープウェイ乗り場でクマ目撃・規制情報を聞く"}, {"cat": "当日", "done": false, "id": "d3", "note": "奥岳の湯が800円→700円", "text": "ロープウェイ往復券を捨てずに持っておく"}, {"cat": "当日", "done": false, "id": "d4", "text": "14:30以降に山麓着なら温泉は見送る"}], "timeline": [{"leg": "行き"}, {"key": true, "note": "郡山 7:23着", "text": "東京駅 発 やまびこ51号", "time": "6:04"}, {"note": "二本松 8:09着", "text": "郡山 発 東北本線", "time": "7:47"}, {"key": true, "note": "奥岳 9:05着／800円／乗り継ぎ6分", "text": "二本松駅前 発 バス（錦秋号・土日祝ダイヤ）", "time": "8:15"}, {"leg": "山行"}, {"text": "ロープウェイ山頂駅から歩き始め", "time": "9:30〜10:00"}, {"note": "遅れ・膝の違和感があれば安達太良山で折り返し", "text": "安達太良山 → 矢筈森で紅葉と景色", "time": "午前〜昼"}, {"note": "温泉に入るならここが目標。遅くとも15:00までに山麓", "text": "薬師岳経由でロープウェイ山麓へ", "time": "14:00ごろ"}, {"leg": "温泉・帰り"}, {"note": "10:00〜19:00／800円（往復券提示で700円）", "text": "奥岳の湯で温泉・着替え", "time": "14:10〜15:00"}, {"key": true, "note": "岳温泉 15:50着", "text": "奥岳 発 バス", "time": "15:30"}, {"note": "二本松駅 16:46着", "text": "岳温泉 発 バス", "time": "16:22"}, {"note": "郡山 17:25着／逃したら17:30発→17:55着", "text": "二本松 発 東北本線", "time": "17:02"}, {"key": true, "note": "東京 19:28着", "text": "郡山 発 やまびこ64号", "time": "18:06"}], "title": "安達太良山・矢筈森 日帰り", "updatedNote": "天気・クマ・時刻は10/9時点の情報。出発前に最新情報を確認してください。", "id": "2026-10-11-adatara"};
+  const SEED = {"area": "福島県・あだたら山ロープウェイ", "date": "2026-10-11", "notes": [{"items": ["11日（日）：晴れ時々曇り／てんくらA／上空風 約1m/s／気温 約12〜14℃", "12日（月祝）：曇り時々晴れ／てんくらA／約3m/s／約10〜11℃", "数値は当日9時の上空予報。山頂の実際の風や一日の安全を保証するものではない"], "kind": "info", "title": "天気（10/9昼時点）"}, {"items": ["薬師岳〜安達太良山〜矢筈森の直近目撃は検索では見つからず。ただし「目撃なし」とは言えない", "あだたら高原リゾートも注意喚起中。福島県全域で秋の注意報が継続", "人が多くても遭遇しないわけではない", "錦秋号はクマ撃退スプレーの車内持ち込み禁止"], "kind": "warn", "title": "クマ"}, {"items": ["出発が遅れた・膝に違和感 → 矢筈森への往復を省き、安達太良山で折り返す"], "kind": "info", "title": "短縮案"}], "reservations": [{"item": "新幹線 東京→郡山（やまびこ51号）", "need": true, "note": "指定席。3連休なので早めに確保", "status": "済"}, {"item": "新幹線 郡山→東京（やまびこ64号）", "need": true, "note": "指定席がおすすめ。大きな渋滞時は出発前に変更", "status": ""}, {"item": "東北本線 郡山↔二本松", "need": false, "note": "普通列車"}, {"item": "錦秋号・岳温泉の路線バス", "need": false, "note": "当日バス停から乗車。座席確保はできない"}, {"item": "あだたら山ロープウェイ", "need": false, "note": "当日券でOK。Web券は乗車時刻・優先乗車の確保ではない"}, {"item": "奥岳の湯", "need": false, "note": "乗り場近く"}], "short": "安達太良山 10/11", "stats": {"cost": "約2.1〜2.3万円＋食事", "distance": "6.5km", "down": "448m", "source": "距離・時間は貼ってくれた他の人の記録（休憩込み）。当日のペースとロープウェイ待ちで調整。", "time": "4時間28分", "up": "431m"}, "tasks": [{"cat": "予約", "done": true, "id": "r1", "text": "行き新幹線 指定席：東京6:04→郡山7:23 やまびこ51号"}, {"cat": "予約", "done": false, "id": "r2", "note": "えきねっとで「10/11・郡山→東京・18時台」", "text": "帰り新幹線 指定席：郡山18:06→東京19:28 やまびこ64号"}, {"cat": "前日まで", "done": false, "id": "p1", "text": "最新の天気予報・てんくら登山指数を再確認"}, {"cat": "前日まで", "done": false, "id": "p2", "text": "ロープウェイの運行状況を確認"}, {"cat": "前日まで", "done": false, "id": "p3", "text": "バス代の小銭を用意（行き800円＋帰り分）"}, {"cat": "前日まで", "done": false, "id": "p4", "text": "短縮案（安達太良山で折り返し）を頭に入れておく"}, {"cat": "持ち物", "done": false, "id": "m1", "text": "温泉用タオル"}, {"cat": "持ち物", "done": false, "id": "m2", "text": "着替え"}, {"cat": "持ち物", "done": false, "id": "m3", "note": "錦秋号は車内持ち込み禁止", "text": "クマ撃退スプレーは持たない"}, {"cat": "当日", "done": false, "id": "d1", "note": "二本松での乗り継ぎは6分", "text": "トイレ・買い物は郡山までに済ませる"}, {"cat": "当日", "done": false, "id": "d2", "text": "ロープウェイ乗り場でクマ目撃・規制情報を聞く"}, {"cat": "当日", "done": false, "id": "d3", "note": "奥岳の湯が800円→700円", "text": "ロープウェイ往復券を捨てずに持っておく"}, {"cat": "当日", "done": false, "id": "d4", "text": "14:30以降に山麓着なら温泉は見送る"}], "timeline": [{"leg": "行き"}, {"key": true, "note": "郡山 7:23着", "text": "東京駅 発 やまびこ51号", "time": "6:04"}, {"note": "二本松 8:09着", "text": "郡山 発 東北本線", "time": "7:47"}, {"key": true, "note": "奥岳 9:05着／800円／乗り継ぎ6分", "text": "二本松駅前 発 バス（錦秋号・土日祝ダイヤ）", "time": "8:15"}, {"leg": "山行"}, {"text": "ロープウェイ山頂駅から歩き始め", "time": "9:30〜10:00"}, {"note": "遅れ・膝の違和感があれば安達太良山で折り返し", "text": "安達太良山 → 矢筈森で紅葉と景色", "time": "午前〜昼"}, {"note": "温泉に入るならここが目標。遅くとも15:00までに山麓", "text": "薬師岳経由でロープウェイ山麓へ", "time": "14:00ごろ"}, {"leg": "温泉・帰り"}, {"note": "10:00〜19:00／800円（往復券提示で700円）", "text": "奥岳の湯で温泉・着替え", "time": "14:10〜15:00"}, {"key": true, "note": "岳温泉 15:50着", "text": "奥岳 発 バス", "time": "15:30"}, {"note": "二本松駅 16:46着", "text": "岳温泉 発 バス", "time": "16:22"}, {"note": "郡山 17:25着／逃したら17:30発→17:55着", "text": "二本松 発 東北本線", "time": "17:02"}, {"key": true, "note": "東京 19:28着", "text": "郡山 発 やまびこ64号", "time": "18:06"}], "title": "安達太良山・矢筈森 日帰り", "updatedNote": "天気・クマ・時刻は10/9時点の情報。出発前に最新情報を確認してください。", "id": "2026-10-11-adatara", "weather": [{"name": "山頂", "lat": 37.6214, "lon": 140.2878, "elev": 1700}, {"name": "ロープウェイ山麓", "lat": 37.617, "lon": 140.333, "elev": 950}]};
   const KEY = "yama.trips.v1";
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -150,6 +165,8 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
       const raw = localStorage.getItem(KEY);
       if(raw){ trips = JSON.parse(raw); }
       else if(SEED){ trips = [SEED]; save(); }
+      // add weather points to the seeded trip if an older version stored it without them
+      if(SEED && SEED.weather){ const s = trips.find(x => x.id === SEED.id); if(s && !s.weather){ s.weather = SEED.weather; save(); } }
       curId = localStorage.getItem("yama.cur");
     }catch(e){ trips = SEED ? [SEED] : []; }
   }
@@ -218,6 +235,7 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
       el.innerHTML = t ? `<div class="panel"><strong>「${esc(t.title)}」を削除しますか？</strong>
         <span class="status">元に戻せません。必要ならバックアップを先に取ってください。</span>
         <div class="tools"><button class="btn danger" style="background:var(--maple);color:var(--paper)" type="button" id="delYes">削除する</button><button class="btn ghost" type="button" data-close>やめる</button></div></div>` : "";
+    } else if(panel === "wxset"){ el.innerHTML = renderWxSet();
     } else el.innerHTML = "";
   }
 
@@ -258,19 +276,22 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
         <form class="addrow" data-add="${esc(c)}"><input id="add-${esc(c)}" placeholder="追加する" aria-label="${esc(c)}に追加"><button>追加</button></form></div>`;
     }).join("") + `</div></section>`;
 
+    html += renderWx(t);
+
     if(t.timeline && t.timeline.length){
       html += `<section><h2>当日の時刻</h2><div class="tt">` + t.timeline.map(r => r.leg
         ? `<div class="leg">${esc(r.leg)}</div>`
         : `<div class="row ${r.key?"key":""}"><time>${esc(r.time)}</time><div>${esc(r.text)}${r.note?`<small>${esc(r.note)}</small>`:""}</div></div>`).join("") + `</div></section>`;
     }
     if(t.reservations && t.reservations.length){
-      const pill = r => r.status === "済" ? `<span class="pill done">予約済み</span>` : r.need ? `<span class="pill need">要予約</span>` : `<span class="pill no">当日でOK</span>`;
-      html += `<section><h2>予約</h2><div class="tblwrap"><table><thead><tr><th>交通・施設</th><th>状態</th><th>メモ</th></tr></thead><tbody>`
-        + t.reservations.map(r => `<tr><td>${esc(r.item)}</td><td>${pill(r)}</td><td>${esc(r.note)}</td></tr>`).join("") + `</tbody></table></div></section>`;
+      const pill = (r,i) => `<button class="pill ${r.status === "済" ? "done" : r.need ? "need" : "no"}" data-resv="${i}" aria-label="予約状態を切り替え">${r.status === "済" ? "✓ 予約済み" : r.need ? "要予約" : "当日でOK"}</button>`;
+      html += `<section><h2>予約</h2><div class="tblwrap"><table><caption>状態のボタンを押すと「予約済み」に切り替わります</caption><thead><tr><th>交通・施設</th><th>状態</th><th>メモ</th></tr></thead><tbody>`
+        + t.reservations.map((r,i) => `<tr><td>${esc(r.item)}</td><td>${pill(r,i)}</td><td>${esc(r.note)}</td></tr>`).join("") + `</tbody></table></div></section>`;
     }
     if(t.notes && t.notes.length){
       html += `<section><h2>メモ</h2><div class="notes">` + t.notes.map(n => `<div class="note ${n.kind==="warn"?"warn":""}"><h3>${esc(n.title)}</h3><ul>${(n.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("") + `</div></section>`;
     }
+    html += `<section><h2>自分のメモ</h2><textarea id="memo" class="memo" placeholder="予約番号の控え、座席、買ったもの、当日の気づきなど">${esc(t.memo || "")}</textarea><span class="status" id="memoMsg">${t.memoAt ? "保存済み " + esc(t.memoAt) : "入力すると自動で保存されます"}</span></section>`;
     main.innerHTML = html;
     $("#foot").textContent = t.updatedNote || "";
     drawTopo();
@@ -298,7 +319,7 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
   // ---------- events ----------
   document.addEventListener("click", async e => {
     const tb = e.target.closest("[data-trip]");
-    if(tb){ setCur(tb.dataset.trip); panel = null; render(); window.scrollTo(0,0); return; }
+    if(tb){ setCur(tb.dataset.trip); panel = null; wxPoint = 0; render(); window.scrollTo(0,0); if(cur()) wxFetch(cur()); return; }
     const op = e.target.closest("[data-open]");
     if(op){ panel = op.dataset.open; renderPanel(); setTimeout(()=>$("#nTitle")?.focus(),0); return; }
     if(e.target.closest("[data-close]")){ panel = null; renderPanel(); return; }
@@ -312,6 +333,9 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
       catch(_){ ta.focus(); ta.select(); $("#expMsg").textContent = "選択しました。長押しでコピーしてください。"; }
       return;
     }
+    const rv = e.target.closest("[data-resv]");
+    if(rv){ const t = cur(); if(!t) return; const i = +rv.dataset.resv;
+      patch(t.id, { reservations: t.reservations.map((r,j) => j === i ? { ...r, status: r.status === "済" ? "" : "済" } : r) }); return; }
     const del = e.target.closest("[data-del]");
     if(del){ const t = cur(); if(t) patch(t.id, { tasks: t.tasks.filter(x => x.id !== del.dataset.del) }); }
   });
@@ -348,11 +372,142 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
       }catch(err){ msg.textContent = "読み込めませんでした：" + err.message + "。Claudeからもらった内容を全部そのまま貼り付けてください。"; }
     }
   });
+  let memoTimer = null;
+  document.addEventListener("input", e => {
+    if(e.target.id !== "memo") return;
+    const t = cur(); if(!t) return; const v = e.target.value;
+    $("#memoMsg").textContent = "保存中…";
+    clearTimeout(memoTimer);
+    memoTimer = setTimeout(() => { const d = new Date(); t.memo = v; t.memoAt = `${d.getMonth()+1}/${d.getDate()} ${hhmm(d)}`; save(); const m = $("#memoMsg"); if(m) m.textContent = "保存済み " + t.memoAt; }, 400);
+  });
   window.addEventListener("resize", drawTopo);
   const net = () => { $("#off").hidden = navigator.onLine; };
   window.addEventListener("online", net); window.addEventListener("offline", net);
 
+  // ---------- weather (Open-Meteo, no key needed) ----------
+  const WX = {}; // tripId -> {at, points:[{name, elev, data}], err, loading}
+  let wxPoint = 0;
+  const WCODE = {0:["快晴","☀"],1:["晴れ","☀"],2:["晴れ時々曇り","⛅"],3:["曇り","☁"],45:["霧","🌫"],48:["霧（着氷）","🌫"],
+    51:["霧雨","🌦"],53:["霧雨","🌦"],55:["強い霧雨","🌧"],56:["着氷性の霧雨","🌧"],57:["着氷性の霧雨","🌧"],
+    61:["小雨","🌦"],63:["雨","🌧"],65:["強い雨","🌧"],66:["着氷性の雨","🌧"],67:["着氷性の雨","🌧"],
+    71:["小雪","🌨"],73:["雪","🌨"],75:["強い雪","❄"],77:["霧雪","🌨"],80:["にわか雨","🌦"],81:["にわか雨","🌧"],82:["激しいにわか雨","⛈"],
+    85:["にわか雪","🌨"],86:["強いにわか雪","❄"],95:["雷雨","⛈"],96:["雷雨・ひょう","⛈"],99:["激しい雷雨・ひょう","⛈"]};
+  const wlabel = c => (WCODE[c] || ["—",""]);
+  const hhmm = d => `${d.getHours()}:${String(d.getMinutes()).padStart(2,"0")}`;
+
+  function wxLoadCache(id){
+    if(WX[id]) return WX[id];
+    try{ const c = JSON.parse(localStorage.getItem("yama.wx." + id) || "null"); if(c) WX[id] = c; }catch(e){}
+    return WX[id];
+  }
+  async function wxFetch(t, force){
+    const pts = t.weather || []; if(!pts.length) return;
+    const c = wxLoadCache(t.id);
+    if(!force && c && c.at && Date.now() - c.at < 15*60*1000) return; // fresh enough
+    if(!navigator.onLine){ return; }
+    WX[t.id] = { ...(c||{}), loading: true, err: "" }; if(cur()?.id === t.id) render();
+    try{
+      const points = await Promise.all(pts.map(async p => {
+        const q = new URLSearchParams({ latitude: p.lat, longitude: p.lon, timezone: "Asia/Tokyo", wind_speed_unit: "ms", forecast_days: "16",
+          current: "temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,precipitation",
+          hourly: "temperature_2m,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m,wind_gusts_10m" });
+        if(p.elev) q.set("elevation", p.elev);
+        const r = await fetch("https://api.open-meteo.com/v1/forecast?" + q);
+        if(!r.ok) throw new Error("HTTP " + r.status);
+        return { name: p.name, elev: p.elev, data: await r.json() };
+      }));
+      WX[t.id] = { at: Date.now(), points, loading: false, err: "" };
+      try{ localStorage.setItem("yama.wx." + t.id, JSON.stringify(WX[t.id])); }catch(e){}
+    }catch(err){
+      WX[t.id] = { ...(c||{}), loading: false, err: "天気を取得できませんでした。電波の良い場所で「更新」を押してください。" };
+    }
+    if(cur()?.id === t.id) render();
+  }
+
+  function renderWx(t){
+    const pts = t.weather || [];
+    if(panel === "wxset") return "";
+    if(!pts.length){
+      return `<section><h2>天気</h2><div class="empty" style="padding:18px">地点を登録すると、山頂などの気温・風・天気をここに表示します。
+        <div style="margin-top:10px"><button class="btn" type="button" data-open="wxset">地点を登録</button></div></div></section>`;
+    }
+    const w = wxLoadCache(t.id);
+    const head = `<div class="wxtabs">${pts.map((p,i)=>`<button class="chip" data-wxp="${i}" aria-pressed="${i===wxPoint}">${esc(p.name)}${p.elev?` <span class="mono">${esc(p.elev)}m</span>`:""}</button>`).join("")}
+      <button class="chip" data-wxrefresh>${w && w.loading ? "取得中…" : "更新"}</button><button class="chip add" data-open="wxset">地点を編集</button></div>`;
+    if(!w || !w.points){
+      return `<section><h2>天気</h2>${head}<div class="empty" style="padding:18px">${w && w.err ? esc(w.err) : "天気を読み込み中です。"}</div></section>`;
+    }
+    const pi = Math.min(wxPoint, w.points.length - 1);
+    const P = w.points[pi], D = P.data, C = D.current || {};
+    const [lab, ico] = wlabel(C.weather_code);
+    const age = Math.round((Date.now() - w.at) / 60000);
+    const stale = age > 60;
+    // hourly rows for the trip day if it is within range, otherwise today
+    const H = D.hourly || {}; const times = H.time || [];
+    const today = new Date(); const tdStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+    const day = t.date && times.some(x => x.startsWith(t.date)) ? t.date : tdStr;
+    const rows = times.map((x,i)=>({x,i})).filter(o => o.x.startsWith(day) && +o.x.slice(11,13) >= 5 && +o.x.slice(11,13) <= 18);
+    const isTrip = day === t.date;
+    const dayLbl = isTrip ? `山行日 ${fmtDate(day)} の予報` : `今日 ${fmtDate(day)} の予報` + (t.date && ddays(t.date) > 0 ? `（山行日の予報は${Math.max(ddays(t.date)-15,1)}日後から出ます）` : "");
+    const gust = C.wind_gusts_10m;
+    return `<section><h2>天気</h2>${head}
+      <div class="wxnow">
+        <div class="wxbig"><span class="wxico" aria-hidden="true">${ico}</span><b class="mono">${C.temperature_2m != null ? Math.round(C.temperature_2m*10)/10 : "—"}</b><span class="unit">℃</span></div>
+        <div class="wxmeta">
+          <div><strong>${esc(lab)}</strong>　体感 <b class="mono">${C.apparent_temperature != null ? Math.round(C.apparent_temperature) : "—"}℃</b></div>
+          <div>風 <b class="mono ${C.wind_speed_10m >= 10 ? "hot" : ""}">${C.wind_speed_10m ?? "—"}m/s</b>　瞬間 <b class="mono ${gust >= 15 ? "hot" : ""}">${gust ?? "—"}m/s</b></div>
+          <div class="status ${stale ? "warnt" : ""}">${hhmm(new Date(w.at))} 取得${stale ? `（${age >= 120 ? Math.floor(age/60) + "時間" : age + "分"}前のデータ）` : ""}${w.err ? "　" + esc(w.err) : ""}</div>
+        </div>
+      </div>
+      <div class="tblwrap"><div class="leg" style="padding:10px 14px 4px">${esc(dayLbl)}</div><table class="wxt"><thead><tr><th>時刻</th><th>天気</th><th>気温</th><th>体感</th><th>降水</th><th>風</th></tr></thead><tbody>
+        ${rows.map(({x,i}) => { const [l,ic] = wlabel(H.weather_code[i]); const pp = H.precipitation_probability?.[i]; const ws = H.wind_speed_10m?.[i];
+          return `<tr><td class="mono">${+x.slice(11,13)}時</td><td>${ic} ${esc(l)}</td><td class="mono">${Math.round(H.temperature_2m[i])}℃</td><td class="mono">${Math.round(H.apparent_temperature[i])}℃</td>
+          <td class="mono ${pp >= 50 ? "hot" : ""}">${pp ?? "—"}%</td><td class="mono ${ws >= 10 ? "hot" : ""}">${ws ?? "—"}m/s</td></tr>`; }).join("")}
+      </tbody></table></div>
+      <p class="status">気象モデルの予報値です（Open-Meteo）。山頂の実測ではないので、出発前は公式の予報や現地の情報も確認してください。風10m/s・降水確率50%以上は赤で表示します。</p>
+    </section>`;
+  }
+
+  function renderWxSet(){
+    const t = cur(); if(!t) return "";
+    const pts = (t.weather && t.weather.length) ? t.weather : [{ name: "山頂", lat: "", lon: "", elev: "" }];
+    return `<form class="panel" id="wxForm"><strong>天気の地点（${esc(t.title)}）</strong>
+      <span class="status">Googleマップで地点を長押しすると「37.62, 140.28」のような座標が出ます。それを貼り付けてください。標高を入れると、その高さの気温に補正します。</span>
+      ${[0,1,2].map(i => { const p = pts[i] || {}; return `<div class="f">
+        <input id="wn${i}" placeholder="${i===0?"地点名（例：山頂）":"地点名（任意）"}" value="${esc(p.name||"")}" style="flex:1 1 120px">
+        <input id="wc${i}" placeholder="緯度, 経度" value="${p.lat!==undefined&&p.lat!==""?esc(p.lat+", "+p.lon):""}" inputmode="decimal" style="flex:2 1 180px">
+        <input id="we${i}" placeholder="標高m" value="${esc(p.elev||"")}" inputmode="numeric" style="flex:0 1 90px;min-width:80px"></div>`; }).join("")}
+      <div class="tools"><button class="btn" type="submit">保存</button><button class="btn ghost" type="button" data-close>やめる</button></div>
+      <span class="status" id="wxMsg"></span></form>`;
+  }
+
+  document.addEventListener("click", e => {
+    const p = e.target.closest("[data-wxp]"); if(p){ wxPoint = +p.dataset.wxp; render(); return; }
+    if(e.target.closest("[data-wxrefresh]")){ const t = cur(); if(t){ if(!navigator.onLine){ $("#foot").textContent = "オフラインのため更新できません。前回のデータを表示しています。"; return; } wxFetch(t, true); } }
+  });
+  document.addEventListener("submit", e => {
+    if(e.target.id !== "wxForm") return;
+    const t = cur(); if(!t) return;
+    const out = [];
+    for(let i = 0; i < 3; i++){
+      const c = $("#wc"+i).value.trim(); if(!c) continue;
+      const m = c.match(/(-?\d+(?:\.\d+)?)\s*[,，、\s]\s*(-?\d+(?:\.\d+)?)/);
+      if(!m){ $("#wxMsg").textContent = `${i+1}行目の座標が読めません。「37.62, 140.28」の形で入れてください。`; return; }
+      const elev = $("#we"+i).value.trim();
+      out.push({ name: $("#wn"+i).value.trim() || `地点${i+1}`, lat: +m[1], lon: +m[2], elev: elev ? +elev : "" });
+    }
+    try{ localStorage.removeItem("yama.wx." + t.id); }catch(_){}
+    delete WX[t.id]; wxPoint = 0; panel = null;
+    patch(t.id, { weather: out });
+    wxFetch(t, true);
+  });
+  // re-fetch when the app comes back to the foreground, and every 30 min while open
+  document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && cur()) wxFetch(cur()); });
+  setInterval(() => { if(document.visibilityState === "visible" && cur()) wxFetch(cur(), true); }, 30*60*1000);
+  window.addEventListener("online", () => { if(cur()) wxFetch(cur()); });
+
   load(); sortTrips(); render(); net();
+  if(cur()) wxFetch(cur());
   if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }
 })();
 </script>

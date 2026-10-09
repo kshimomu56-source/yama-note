@@ -1,5 +1,5 @@
 // 山行ノート service worker: app shell cached for offline use in the mountains.
-const VERSION = "yama-v1";
+const VERSION = "yama-v2";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/apple-touch-icon.png", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", e => {
