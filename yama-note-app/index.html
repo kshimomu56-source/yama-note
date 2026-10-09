@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>山行ノート</title>
+<meta name="theme-color" content="#2f5a45">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="山行ノート">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+
+/* Layout: a field notebook — one trip per page, contour-line header, timetable in mono like a 時刻表 */
+:root{
+  --bg:#eef1ec; --paper:#f8faf6; --ink:#1d2a23; --mute:#5d6b62; --line:#d3dbd2;
+  --forest:#2f5a45; --maple:#b5283f; --maple-soft:#f6e1e3; --ok:#2f7a4f; --ok-soft:#dcefe2; --warn:#9a6a00; --warn-soft:#f6ecd2;
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121915; --paper:#1a231e; --ink:#e4ebe5; --mute:#94a399; --line:#2c3a32;
+  --forest:#7fb89a; --maple:#ef7a8c; --maple-soft:#3a1d23; --ok:#7fcf9e; --ok-soft:#1d3527; --warn:#e3b65a; --warn-soft:#3a2f17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121915; --paper:#1a231e; --ink:#e4ebe5; --mute:#94a399; --line:#2c3a32;
+  --forest:#7fb89a; --maple:#ef7a8c; --maple-soft:#3a1d23; --ok:#7fcf9e; --ok-soft:#1d3527; --warn:#e3b65a; --warn-soft:#3a2f17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:20px 64px;display:grid;gap:22px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--maple);outline-offset:2px}
+.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.brand{font-family:var(--f-display);font-weight:900;font-size:18px;letter-spacing:.08em}
+.brand small{font-weight:500;color:var(--mute);letter-spacing:.04em;margin-left:8px;font-size:12px}
+.trips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:var(--paper)}
+.chip.add{border-style:dashed;color:var(--mute)}
+.hero{position:relative;overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 20px 18px;display:grid;gap:12px}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
+.hero>*:not(canvas){position:relative}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--mute);font-weight:500}
+.hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(24px,5vw,34px);line-height:1.25;margin:0;text-wrap:balance}
+.dday{display:inline-flex;align-items:baseline;gap:6px;color:var(--maple);font-weight:700}
+.dday b{font-family:var(--f-mono);font-size:28px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--mute)}
+.stats span b{font-family:var(--f-mono);color:var(--ink);font-size:16px;margin-right:2px;font-variant-numeric:tabular-nums}
+.progress{display:grid;gap:6px}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--forest);transition:width .3s}
+.progress p{margin:0;font-size:13px;color:var(--mute)}
+section{display:grid;gap:10px}
+h2{font-family:var(--f-display);font-size:17px;font-weight:700;margin:0;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.cat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:6px;align-content:start;min-width:0}
+.cat h3{margin:0;font-size:13px;letter-spacing:.08em;color:var(--forest);display:flex;justify-content:space-between}
+.cat h3 span{font-family:var(--f-mono);color:var(--mute);font-weight:500}
+.task{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:start;padding:4px 0;border-top:1px dashed var(--line)}
+.task:first-of-type{border-top:0}
+.task input{width:18px;height:18px;margin-top:3px;accent-color:var(--forest)}
+.task label{min-width:0;overflow-wrap:anywhere}
+.task.done label{color:var(--mute);text-decoration:line-through}
+.task .del{border:0;background:none;color:var(--mute);font-size:16px;line-height:1;padding:2px 4px;opacity:.5}
+.task .del:hover{opacity:1;color:var(--maple)}
+.task small{display:block;color:var(--mute);font-size:12px;text-decoration:none}
+.addrow{display:flex;gap:6px;margin-top:4px}
+.addrow input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:5px 8px;font-size:13px}
+.addrow button{border:1px solid var(--forest);background:none;color:var(--forest);border-radius:8px;padding:4px 10px;font-size:13px}
+.tt{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px 0}
+.leg{padding:8px 14px 2px;font-size:12px;letter-spacing:.12em;color:var(--mute)}
+.row{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:6px 14px}
+.row time{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--forest);font-weight:600;font-size:14px}
+.row div{min-width:0}
+.row small{display:block;color:var(--mute);font-size:12.5px}
+.row.key{background:var(--maple-soft)}
+.row.key time{color:var(--maple)}
+.tblwrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--mute);font-weight:500;letter-spacing:.06em}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-size:12px;border-radius:99px;padding:1px 9px;white-space:nowrap}
+.pill.need{background:var(--warn-soft);color:var(--warn)}
+.pill.no{background:var(--line);color:var(--mute)}
+.pill.done{background:var(--ok-soft);color:var(--ok)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.note{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--forest);border-radius:10px;padding:12px 14px;min-width:0}
+.note.warn{border-left-color:var(--maple)}
+.note h3{margin:0 0 4px;font-size:14px}
+.note ul{margin:0;padding-left:1.1em;font-size:13.5px}
+.note li+li{margin-top:3px}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:28px 20px;text-align:center;color:var(--mute)}
+.newform{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.newform .f{display:flex;flex-wrap:wrap;gap:8px}
+.newform input{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 10px;flex:1;min-width:160px}
+.btn{border:0;background:var(--forest);color:var(--paper);border-radius:8px;padding:7px 14px;font-weight:700}
+.btn.ghost{background:none;color:var(--mute);border:1px solid var(--line)}
+.foot{font-size:12px;color:var(--mute)}
+@media (max-width:480px){.row{grid-template-columns:78px 1fr}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.panel textarea{width:100%;min-height:140px;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px;font-family:var(--f-mono);font-size:12px}
+.danger{color:var(--maple)!important;border-color:var(--maple)!important}
+.status{font-size:12px;color:var(--mute)}
+.offline{display:inline-block;font-size:11px;border-radius:99px;padding:1px 8px;background:var(--warn-soft);color:var(--warn)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">山行ノート<small>やること・時刻・メモ</small> <span class="offline" id="off" hidden>オフライン</span></div>
+    <nav class="trips" id="trips" aria-label="山行を選ぶ"></nav>
+  </header>
+  <div id="panel"></div>
+  <main id="main" style="display:grid;gap:22px"></main>
+  <footer class="tools">
+    <button class="btn ghost" id="impBtn" type="button">山行を取り込む</button>
+    <button class="btn ghost" id="expBtn" type="button">バックアップ</button>
+    <button class="btn ghost danger" id="delBtn" type="button">この山行を削除</button>
+  </footer>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+(function(){
+  const SEED = {"area": "福島県・あだたら山ロープウェイ", "date": "2026-10-11", "notes": [{"items": ["11日（日）：晴れ時々曇り／てんくらA／上空風 約1m/s／気温 約12〜14℃", "12日（月祝）：曇り時々晴れ／てんくらA／約3m/s／約10〜11℃", "数値は当日9時の上空予報。山頂の実際の風や一日の安全を保証するものではない"], "kind": "info", "title": "天気（10/9昼時点）"}, {"items": ["薬師岳〜安達太良山〜矢筈森の直近目撃は検索では見つからず。ただし「目撃なし」とは言えない", "あだたら高原リゾートも注意喚起中。福島県全域で秋の注意報が継続", "人が多くても遭遇しないわけではない", "錦秋号はクマ撃退スプレーの車内持ち込み禁止"], "kind": "warn", "title": "クマ"}, {"items": ["出発が遅れた・膝に違和感 → 矢筈森への往復を省き、安達太良山で折り返す"], "kind": "info", "title": "短縮案"}], "reservations": [{"item": "新幹線 東京→郡山（やまびこ51号）", "need": true, "note": "指定席。3連休なので早めに確保", "status": "済"}, {"item": "新幹線 郡山→東京（やまびこ64号）", "need": true, "note": "指定席がおすすめ。大きな渋滞時は出発前に変更", "status": ""}, {"item": "東北本線 郡山↔二本松", "need": false, "note": "普通列車"}, {"item": "錦秋号・岳温泉の路線バス", "need": false, "note": "当日バス停から乗車。座席確保はできない"}, {"item": "あだたら山ロープウェイ", "need": false, "note": "当日券でOK。Web券は乗車時刻・優先乗車の確保ではない"}, {"item": "奥岳の湯", "need": false, "note": "乗り場近く"}], "short": "安達太良山 10/11", "stats": {"cost": "約2.1〜2.3万円＋食事", "distance": "6.5km", "down": "448m", "source": "距離・時間は貼ってくれた他の人の記録（休憩込み）。当日のペースとロープウェイ待ちで調整。", "time": "4時間28分", "up": "431m"}, "tasks": [{"cat": "予約", "done": true, "id": "r1", "text": "行き新幹線 指定席：東京6:04→郡山7:23 やまびこ51号"}, {"cat": "予約", "done": false, "id": "r2", "note": "えきねっとで「10/11・郡山→東京・18時台」", "text": "帰り新幹線 指定席：郡山18:06→東京19:28 やまびこ64号"}, {"cat": "前日まで", "done": false, "id": "p1", "text": "最新の天気予報・てんくら登山指数を再確認"}, {"cat": "前日まで", "done": false, "id": "p2", "text": "ロープウェイの運行状況を確認"}, {"cat": "前日まで", "done": false, "id": "p3", "text": "バス代の小銭を用意（行き800円＋帰り分）"}, {"cat": "前日まで", "done": false, "id": "p4", "text": "短縮案（安達太良山で折り返し）を頭に入れておく"}, {"cat": "持ち物", "done": false, "id": "m1", "text": "温泉用タオル"}, {"cat": "持ち物", "done": false, "id": "m2", "text": "着替え"}, {"cat": "持ち物", "done": false, "id": "m3", "note": "錦秋号は車内持ち込み禁止", "text": "クマ撃退スプレーは持たない"}, {"cat": "当日", "done": false, "id": "d1", "note": "二本松での乗り継ぎは6分", "text": "トイレ・買い物は郡山までに済ませる"}, {"cat": "当日", "done": false, "id": "d2", "text": "ロープウェイ乗り場でクマ目撃・規制情報を聞く"}, {"cat": "当日", "done": false, "id": "d3", "note": "奥岳の湯が800円→700円", "text": "ロープウェイ往復券を捨てずに持っておく"}, {"cat": "当日", "done": false, "id": "d4", "text": "14:30以降に山麓着なら温泉は見送る"}], "timeline": [{"leg": "行き"}, {"key": true, "note": "郡山 7:23着", "text": "東京駅 発 やまびこ51号", "time": "6:04"}, {"note": "二本松 8:09着", "text": "郡山 発 東北本線", "time": "7:47"}, {"key": true, "note": "奥岳 9:05着／800円／乗り継ぎ6分", "text": "二本松駅前 発 バス（錦秋号・土日祝ダイヤ）", "time": "8:15"}, {"leg": "山行"}, {"text": "ロープウェイ山頂駅から歩き始め", "time": "9:30〜10:00"}, {"note": "遅れ・膝の違和感があれば安達太良山で折り返し", "text": "安達太良山 → 矢筈森で紅葉と景色", "time": "午前〜昼"}, {"note": "温泉に入るならここが目標。遅くとも15:00までに山麓", "text": "薬師岳経由でロープウェイ山麓へ", "time": "14:00ごろ"}, {"leg": "温泉・帰り"}, {"note": "10:00〜19:00／800円（往復券提示で700円）", "text": "奥岳の湯で温泉・着替え", "time": "14:10〜15:00"}, {"key": true, "note": "岳温泉 15:50着", "text": "奥岳 発 バス", "time": "15:30"}, {"note": "二本松駅 16:46着", "text": "岳温泉 発 バス", "time": "16:22"}, {"note": "郡山 17:25着／逃したら17:30発→17:55着", "text": "二本松 発 東北本線", "time": "17:02"}, {"key": true, "note": "東京 19:28着", "text": "郡山 発 やまびこ64号", "time": "18:06"}], "title": "安達太良山・矢筈森 日帰り", "updatedNote": "天気・クマ・時刻は10/9時点の情報。出発前に最新情報を確認してください。", "id": "2026-10-11-adatara"};
+  const KEY = "yama.trips.v1";
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const CAT_ORDER = ["予約","前日まで","持ち物","当日"];
+  const uid = () => "t" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+  let trips = [], curId = null, panel = null;
+
+  // ---------- storage (this phone only) ----------
+  function load(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(raw){ trips = JSON.parse(raw); }
+      else if(SEED){ trips = [SEED]; save(); }
+      curId = localStorage.getItem("yama.cur");
+    }catch(e){ trips = SEED ? [SEED] : []; }
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(trips)); }
+    catch(e){ $("#foot").textContent = "保存できませんでした。容量不足かプライベートモードの可能性があります。"; }
+  }
+  function setCur(id){ curId = id; try{ localStorage.setItem("yama.cur", id || ""); }catch(e){} }
+  function sortTrips(){ trips.sort((a,b) => (a.date||"9999").localeCompare(b.date||"9999")); }
+  function cur(){ return trips.find(x => x.id === curId); }
+  function patch(id, fields){ const t = trips.find(x => x.id === id); if(!t) return; Object.assign(t, fields); save(); render(); }
+
+  // ---------- helpers ----------
+  function ddays(dateStr){
+    if(!dateStr) return null;
+    const now = new Date(); const t = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const [y,m,d] = dateStr.split("-").map(Number);
+    return Math.round((new Date(y, m-1, d) - t) / 86400000);
+  }
+  function fmtDate(s){
+    if(!s) return "日付未定";
+    const [y,m,d] = s.split("-").map(Number); const w = "日月火水木金土"[new Date(y,m-1,d).getDay()];
+    return `${y}年${m}月${d}日（${w}）`;
+  }
+  function normalize(o){
+    if(!o || typeof o !== "object" || !o.title) throw new Error("title がありません");
+    return {
+      id: o.id || uid(), title: String(o.title), short: o.short || String(o.title).slice(0,10), date: o.date || "",
+      area: o.area || "", stats: o.stats || {}, updatedNote: o.updatedNote || "",
+      tasks: (o.tasks || []).map(x => ({ id: x.id || uid(), text: String(x.text||""), cat: x.cat || "その他", note: x.note || "", done: !!x.done })),
+      timeline: o.timeline || [], reservations: o.reservations || [], notes: o.notes || []
+    };
+  }
+
+  // ---------- render ----------
+  function renderTrips(){
+    $("#trips").innerHTML = trips.map(t => `<button class="chip" data-trip="${esc(t.id)}" aria-pressed="${t.id===curId}">${esc(t.short || t.title)}</button>`).join("")
+      + `<button class="chip add" data-open="new">＋ 新しい山行</button>`;
+  }
+
+  function renderPanel(){
+    const el = $("#panel");
+    if(panel === "new"){
+      el.innerHTML = `<form class="newform" id="newForm">
+        <strong>新しい山行</strong>
+        <div class="f"><input id="nTitle" placeholder="山・コース名（例：谷川岳 天神尾根）" required>
+        <input id="nDate" type="date" style="flex:0 1 180px"></div>
+        <div class="f"><button class="btn" type="submit">作成する</button><button class="btn ghost" type="button" data-close>やめる</button></div>
+        <span class="foot">基本の持ち物リストが入った状態で作られます。</span></form>`;
+    } else if(panel === "import"){
+      el.innerHTML = `<form class="panel" id="impForm">
+        <strong>山行を取り込む</strong>
+        <span class="status">Claudeが作った山行データ（JSON）を貼り付けてください。同じIDの山行は上書きされます。バックアップを貼ると全部戻せます。</span>
+        <textarea id="impText" placeholder='{"title":"…","date":"2026-10-11","tasks":[…]}'></textarea>
+        <div class="f tools"><button class="btn" type="submit">取り込む</button><button class="btn ghost" type="button" data-close>やめる</button></div>
+        <span class="status" id="impMsg"></span></form>`;
+    } else if(panel === "export"){
+      const json = JSON.stringify(trips, null, 1);
+      el.innerHTML = `<div class="panel"><strong>バックアップ</strong>
+        <span class="status">データはこのiPhoneの中だけに保存されています。機種変更の前などに、下の内容をコピーしてメモアプリなどに保管してください。</span>
+        <textarea id="expText" readonly>${esc(json)}</textarea>
+        <div class="tools"><button class="btn" type="button" id="copyBtn">コピー</button><button class="btn ghost" type="button" data-close>閉じる</button></div>
+        <span class="status" id="expMsg"></span></div>`;
+    } else if(panel === "delete"){
+      const t = cur();
+      el.innerHTML = t ? `<div class="panel"><strong>「${esc(t.title)}」を削除しますか？</strong>
+        <span class="status">元に戻せません。必要ならバックアップを先に取ってください。</span>
+        <div class="tools"><button class="btn danger" style="background:var(--maple);color:var(--paper)" type="button" id="delYes">削除する</button><button class="btn ghost" type="button" data-close>やめる</button></div></div>` : "";
+    } else el.innerHTML = "";
+  }
+
+  function render(){
+    renderTrips(); renderPanel();
+    $("#delBtn").hidden = !trips.length;
+    const main = $("#main");
+    if(!trips.length){ main.innerHTML = `<div class="empty">まだ山行がありません。「＋ 新しい山行」か「山行を取り込む」から追加してください。</div>`; return; }
+    const t = cur() || trips[0]; if(t.id !== curId) setCur(t.id);
+    const tasks = t.tasks || [];
+    const done = tasks.filter(x => x.done).length;
+    const pct = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+    const dd = ddays(t.date);
+    const ddTxt = dd === null ? "" : dd > 0 ? `<span class="dday">あと<b>${dd}</b>日</span>` : dd === 0 ? `<span class="dday"><b>今日</b>出発</span>` : `<span class="dday" style="color:var(--mute)">${-dd}日前に終了</span>`;
+    const s = t.stats || {};
+    const cats = [...new Set([...CAT_ORDER, ...tasks.map(x => x.cat || "その他")])];
+
+    let html = `<div class="hero"><canvas id="topo" aria-hidden="true"></canvas>
+      <div class="eyebrow">${esc(fmtDate(t.date))}${t.area ? "　" + esc(t.area) : ""}</div>
+      <h1>${esc(t.title)}</h1>${ddTxt}
+      ${(s.distance||s.up||s.time) ? `<div class="stats">
+        ${s.distance?`<span>距離 <b>${esc(s.distance)}</b></span>`:""}
+        ${s.up?`<span>登り <b>${esc(s.up)}</b></span>`:""}
+        ${s.down?`<span>下り <b>${esc(s.down)}</b></span>`:""}
+        ${s.time?`<span>行動 <b>${esc(s.time)}</b></span>`:""}
+        ${s.cost?`<span>費用 <b>${esc(s.cost)}</b></span>`:""}</div>` : ""}
+      ${s.source?`<div class="foot">${esc(s.source)}</div>`:""}
+      <div class="progress"><div class="bar"><i style="width:${pct}%"></i></div><p>やること ${done} / ${tasks.length} 完了</p></div></div>`;
+
+    html += `<section><h2>やること</h2><div class="cats">` + cats.map(c => {
+      const list = tasks.filter(x => (x.cat||"その他") === c);
+      if(!list.length && !CAT_ORDER.includes(c)) return "";
+      return `<div class="cat"><h3>${esc(c)}<span>${list.filter(x=>x.done).length}/${list.length}</span></h3>
+        ${list.map(x => `<div class="task ${x.done?"done":""}">
+          <input type="checkbox" id="tk-${esc(x.id)}" data-toggle="${esc(x.id)}" ${x.done?"checked":""}>
+          <label for="tk-${esc(x.id)}">${esc(x.text)}${x.note?`<small>${esc(x.note)}</small>`:""}</label>
+          <button class="del" data-del="${esc(x.id)}" aria-label="削除">×</button></div>`).join("")}
+        <form class="addrow" data-add="${esc(c)}"><input id="add-${esc(c)}" placeholder="追加する" aria-label="${esc(c)}に追加"><button>追加</button></form></div>`;
+    }).join("") + `</div></section>`;
+
+    if(t.timeline && t.timeline.length){
+      html += `<section><h2>当日の時刻</h2><div class="tt">` + t.timeline.map(r => r.leg
+        ? `<div class="leg">${esc(r.leg)}</div>`
+        : `<div class="row ${r.key?"key":""}"><time>${esc(r.time)}</time><div>${esc(r.text)}${r.note?`<small>${esc(r.note)}</small>`:""}</div></div>`).join("") + `</div></section>`;
+    }
+    if(t.reservations && t.reservations.length){
+      const pill = r => r.status === "済" ? `<span class="pill done">予約済み</span>` : r.need ? `<span class="pill need">要予約</span>` : `<span class="pill no">当日でOK</span>`;
+      html += `<section><h2>予約</h2><div class="tblwrap"><table><thead><tr><th>交通・施設</th><th>状態</th><th>メモ</th></tr></thead><tbody>`
+        + t.reservations.map(r => `<tr><td>${esc(r.item)}</td><td>${pill(r)}</td><td>${esc(r.note)}</td></tr>`).join("") + `</tbody></table></div></section>`;
+    }
+    if(t.notes && t.notes.length){
+      html += `<section><h2>メモ</h2><div class="notes">` + t.notes.map(n => `<div class="note ${n.kind==="warn"?"warn":""}"><h3>${esc(n.title)}</h3><ul>${(n.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("") + `</div></section>`;
+    }
+    main.innerHTML = html;
+    $("#foot").textContent = t.updatedNote || "";
+    drawTopo();
+  }
+
+  function drawTopo(){
+    const c = document.getElementById("topo"); if(!c) return;
+    const r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    c.width = r.width * dpr; c.height = r.height * dpr;
+    const g = c.getContext("2d"); g.scale(dpr, dpr);
+    g.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--line").trim() || "#ccc";
+    g.lineWidth = 1;
+    const cx = r.width * .82, cy = r.height * .2;
+    for(let k = 1; k <= 14; k++){
+      g.beginPath();
+      for(let a = 0; a <= Math.PI * 2 + .01; a += .05){
+        const rad = k * 22 * (1 + .18 * Math.sin(a * 3 + k * .4) + .08 * Math.cos(a * 5 - k));
+        const x = cx + Math.cos(a) * rad * 1.35, y = cy + Math.sin(a) * rad;
+        a === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+      }
+      g.stroke();
+    }
+  }
+
+  // ---------- events ----------
+  document.addEventListener("click", async e => {
+    const tb = e.target.closest("[data-trip]");
+    if(tb){ setCur(tb.dataset.trip); panel = null; render(); window.scrollTo(0,0); return; }
+    const op = e.target.closest("[data-open]");
+    if(op){ panel = op.dataset.open; renderPanel(); setTimeout(()=>$("#nTitle")?.focus(),0); return; }
+    if(e.target.closest("[data-close]")){ panel = null; renderPanel(); return; }
+    if(e.target.id === "impBtn"){ panel = "import"; renderPanel(); return; }
+    if(e.target.id === "expBtn"){ panel = "export"; renderPanel(); return; }
+    if(e.target.id === "delBtn"){ panel = "delete"; renderPanel(); window.scrollTo(0,0); return; }
+    if(e.target.id === "delYes"){ trips = trips.filter(x => x.id !== curId); save(); setCur(trips[0]?.id || null); panel = null; render(); return; }
+    if(e.target.id === "copyBtn"){
+      const ta = $("#expText");
+      try{ await navigator.clipboard.writeText(ta.value); $("#expMsg").textContent = "コピーしました。"; }
+      catch(_){ ta.focus(); ta.select(); $("#expMsg").textContent = "選択しました。長押しでコピーしてください。"; }
+      return;
+    }
+    const del = e.target.closest("[data-del]");
+    if(del){ const t = cur(); if(t) patch(t.id, { tasks: t.tasks.filter(x => x.id !== del.dataset.del) }); }
+  });
+  document.addEventListener("change", e => {
+    const id = e.target.dataset && e.target.dataset.toggle; if(!id) return;
+    const t = cur(); if(!t) return;
+    patch(t.id, { tasks: t.tasks.map(x => x.id === id ? { ...x, done: e.target.checked } : x) });
+  });
+  document.addEventListener("submit", e => {
+    e.preventDefault();
+    const f = e.target;
+    if(f.dataset.add){
+      const inp = f.querySelector("input"); const text = inp.value.trim(); if(!text) return;
+      const t = cur(); if(!t) return;
+      patch(t.id, { tasks: [...t.tasks, { id: uid(), text, cat: f.dataset.add, done: false }] });
+      setTimeout(() => document.getElementById("add-" + f.dataset.add)?.focus(), 0);
+    }
+    if(f.id === "newForm"){
+      const title = $("#nTitle").value.trim(); if(!title) return;
+      const base = ["雨具（上下）","ヘッドライト","行動食・水","地図・コース情報（オフライン）","モバイルバッテリー"];
+      const t = normalize({ title, date: $("#nDate").value || "", tasks: [
+        { text: "天気予報を確認", cat: "前日まで" }, { text: "登山届の提出", cat: "前日まで" },
+        { text: "交通手段と予約の要否を確認", cat: "予約" }, ...base.map(x => ({ text: x, cat: "持ち物" })) ] });
+      trips.push(t); sortTrips(); save(); setCur(t.id); panel = null; render();
+    }
+    if(f.id === "impForm"){
+      const msg = $("#impMsg");
+      try{
+        let data = JSON.parse($("#impText").value.trim());
+        const list = (Array.isArray(data) ? data : [data]).map(normalize);
+        list.forEach(n => { const i = trips.findIndex(x => x.id === n.id); i >= 0 ? trips[i] = n : trips.push(n); });
+        sortTrips(); save(); setCur(list[0].id); panel = null; render();
+        $("#foot").textContent = `${list.length}件の山行を取り込みました。`;
+      }catch(err){ msg.textContent = "読み込めませんでした：" + err.message + "。Claudeからもらった内容を全部そのまま貼り付けてください。"; }
+    }
+  });
+  window.addEventListener("resize", drawTopo);
+  const net = () => { $("#off").hidden = navigator.onLine; };
+  window.addEventListener("online", net); window.addEventListener("offline", net);
+
+  load(); sortTrips(); render(); net();
+  if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }
+})();
+</script>
+</body>
+</html>
